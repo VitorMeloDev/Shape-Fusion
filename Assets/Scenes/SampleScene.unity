@@ -1361,6 +1361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1193791534}
   - component: {fileID: 1193791533}
+  - component: {fileID: 1193791535}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -1380,6 +1381,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b84e6cc3f7a0843b29333b8d68cb85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_keyRepeatRateLeftRight: 0.1
+  m_keyRepeatRateDown: 0.02
+  m_keyRepeatRateRotate: 0.2
 --- !u!4 &1193791534
 Transform:
   m_ObjectHideFlags: 0
@@ -1395,6 +1399,64 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1193791535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193791532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 8871aba95edb8da488d4cbc322c11f0c, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1193791533}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ShapeToRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5731da6a-2baf-45ec-8eeb-2c7b67e9ef02
+    m_ActionName: Player/Right[/Keyboard/d,/Keyboard/rightArrow,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 75f8d40b-2a3d-42c3-b6c9-f8699f1ff76e
+    m_ActionName: Player/Left[/Keyboard/a,/Keyboard/leftArrow,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/dpad/left]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 188ddafc-bb0e-4397-b8cb-568b5006bf8e
+    m_ActionName: Player/Down[/Keyboard/s,/Keyboard/downArrow,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/dpad/down]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 710ecc57-a6f3-4e38-ac47-f28ac86e0604
+    m_ActionName: Player/Rotate[/Keyboard/space,/XInputControllerWindows/buttonSouth]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1245252726
 GameObject:
   m_ObjectHideFlags: 0
