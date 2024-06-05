@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {   
@@ -22,16 +23,19 @@ public class GameManager : MonoBehaviour
     [Range(0.02f,1f)]
     public float m_keyRepeatRateRotate = 0.25f;
 
+    public GameObject m_gameOverPanel;
+
     // Start is called before the first frame update
     void Start()
     {
         m_board = GameObject.FindWithTag("Board").GetComponent<Board>();
         m_spawner = GameObject.FindWithTag("Spawner").GetComponent<Spawner>();
+        m_gameOverPanel.SetActive(false);
 
         m_timeToNextKeyLeftRight = Time.time + m_keyRepeatRateLeftRight;
         m_timeToNextKeyDown = Time.time + m_keyRepeatRateDown;
         m_timeToNextKeyRotate = Time.time + m_keyRepeatRateRotate;
-
+        
         if(m_spawner)
         {
             m_spawner.transform.position = VectorF.Round(m_spawner.transform.position);
@@ -85,9 +89,7 @@ public class GameManager : MonoBehaviour
             {
                 if(m_board.IsOverLimit(m_currentShape))
                 {
-                    m_currentShape.MoveUp();
-                    m_gameOver = true;
-                    Debug.Log("Is over limit");
+                    GameOver();
                 }
                 else
                 {
@@ -98,6 +100,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void GameOver()
+    {
+        m_currentShape.MoveUp();
+        m_gameOver = true;
+        m_gameOverPanel.SetActive(true);
+    }
     private void LandShape()
     {
         m_timeToNextKeyLeftRight = Time.time;
@@ -109,5 +117,10 @@ public class GameManager : MonoBehaviour
         m_currentShape = m_spawner.SpawnShape();
 
         m_board.ClearAllRows();
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
     }
 }
