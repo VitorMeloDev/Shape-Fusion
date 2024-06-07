@@ -8,6 +8,7 @@ TagManager:
   - Spawner
   - Board
   - SoundManager
+  - ScoreManager
   layers:
   - Default
   - TransparentFX

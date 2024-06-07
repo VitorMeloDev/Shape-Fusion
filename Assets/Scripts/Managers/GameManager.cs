@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : MonoBehaviour
 {   
@@ -10,8 +11,11 @@ public class GameManager : MonoBehaviour
     Spawner m_spawner;
     Shape m_currentShape;
     SoundManager m_soundManager;
+    ScoreManager m_scoreManager;
     bool m_gameOver;
-    public float m_dropInterval = 0.9f;
+
+	public float m_dropInterval = 0.1f;
+	float m_dropIntervalModded;
     float m_timeToDrop;
     bool m_isPaused = false;
 
@@ -34,6 +38,7 @@ public class GameManager : MonoBehaviour
         m_board = GameObject.FindWithTag("Board").GetComponent<Board>();
         m_spawner = GameObject.FindWithTag("Spawner").GetComponent<Spawner>();
         m_soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        m_scoreManager = GameObject.FindWithTag("ScoreManager").GetComponent<ScoreManager>();
         m_gameOverPanel.SetActive(false);
 
         m_timeToNextKeyLeftRight = Time.time + m_keyRepeatRateLeftRight;
@@ -49,12 +54,15 @@ public class GameManager : MonoBehaviour
                 m_currentShape = m_spawner.SpawnShape();
             }
         }
+
+        m_dropIntervalModded = Mathf.Clamp(m_dropInterval - ((float)m_scoreManager.m_level * 0.1f), 0.05f, 1f);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!m_spawner || !m_board || !m_currentShape || m_gameOver)
+        if(!m_spawner || !m_board || !m_currentShape || m_gameOver || !m_scoreManager)
         {
             return;
         }
@@ -64,13 +72,13 @@ public class GameManager : MonoBehaviour
 
     void PlayerInput()
     {
-        if(Input.GetButton("MoveRight") && (Time.time > m_timeToNextKeyLeftRight) || Input.GetButtonDown("MoveRight"))
+        if((Input.GetButton("MoveRight") && (Time.time > m_timeToNextKeyLeftRight)) || Input.GetButtonDown("MoveRight"))
         {
             m_currentShape.MoveRight();
             m_timeToNextKeyLeftRight = Time.time + m_keyRepeatRateLeftRight;
             if(!m_board.IsValidPosition(m_currentShape)){m_currentShape.MoveLeft();}else{PlaySound(m_soundManager.m_moveSound);}
         }
-        else if(Input.GetButton("MoveLeft") && (Time.time > m_timeToNextKeyLeftRight) || Input.GetButtonDown("MoveLeft"))
+        else if((Input.GetButton("MoveLeft") && (Time.time > m_timeToNextKeyLeftRight)) || Input.GetButtonDown("MoveLeft"))
         {
             m_currentShape.MoveLeft();
             m_timeToNextKeyLeftRight = Time.time + m_keyRepeatRateLeftRight;
@@ -82,10 +90,10 @@ public class GameManager : MonoBehaviour
             m_timeToNextKeyRotate = Time.time + m_keyRepeatRateRotate;
             if(!m_board.IsValidPosition(m_currentShape)){m_currentShape.RotateLeft(); PlaySound(m_soundManager.m_errorSound);}else{PlaySound(m_soundManager.m_moveSound);}
         }
-        else if(Input.GetButton("MoveDown") && (Time.time > m_timeToNextKeyDown) || (Time.time > m_timeToDrop))
+        else if((Input.GetButton("MoveDown") && (Time.time > m_timeToNextKeyDown)) || (Time.time > m_timeToDrop))
         {
             m_timeToNextKeyDown = Time.time + m_keyRepeatRateDown;
-            m_timeToDrop = Time.time + m_dropInterval;
+            m_timeToDrop = Time.time + m_dropIntervalModded;
 
             m_currentShape.MoveDown();
 
@@ -130,17 +138,29 @@ public class GameManager : MonoBehaviour
 
         m_board.ClearAllRows();
 
-        if(m_board.m_completedRows > 0)
-        {
-            if(m_board.m_completedRows > 1)
-            {
-                PlaySound(m_soundManager.GetRandomAudioClip(m_soundManager.m_vocalClips));
-            }
-            else
-            {
-                PlaySound(m_soundManager.m_clearRowSound);
-            }
-        }
+
+		if (m_board.m_completedRows > 0)
+		{
+			m_scoreManager.ScoreLines(m_board.m_completedRows);
+
+			if (m_scoreManager.didLevelUp)
+			{
+				m_dropIntervalModded = Mathf.Clamp(m_dropInterval - ((float)m_scoreManager.m_level * 0.05f), 0.05f, 1f);
+				PlaySound(m_soundManager.m_levelUpVocalClip);
+			}
+			else
+			{
+				if (m_board.m_completedRows > 1)
+				{
+					AudioClip randomVocal = m_soundManager.GetRandomAudioClip(m_soundManager.m_vocalClips);
+					PlaySound(randomVocal);
+				}
+			}
+
+			PlaySound (m_soundManager.m_clearRowSound);
+		}
+
+		PlaySound (m_soundManager.m_clearRowSound);
     }
 
     void PlaySound(AudioClip clip)
