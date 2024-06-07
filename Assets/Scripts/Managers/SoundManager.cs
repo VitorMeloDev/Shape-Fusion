@@ -21,6 +21,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] m_musicClips;
     public AudioClip[] m_vocalClips;
     public AudioClip m_gameoverVocalClip;
+
+    [Header("Buttons Icons")]
+    public IconToggle m_fxToggle;
+    public IconToggle m_musicToggle;
     // Start is called before the first frame update
     void Start()
     {
@@ -70,11 +74,13 @@ public class SoundManager : MonoBehaviour
     {
         m_musicEnabled = !m_musicEnabled;
         UpdateMusic();
+        m_musicToggle.ToggleIcon(m_musicEnabled);
     }
 
     public void ToggleFX()
     {
         m_fxEnabled = !m_fxEnabled;
+        m_fxToggle.ToggleIcon(m_fxEnabled);
     }
 
     public AudioClip GetRandomAudioClip(AudioClip[] clips)

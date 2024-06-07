@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     bool m_gameOver;
     public float m_dropInterval = 0.9f;
     float m_timeToDrop;
+    bool m_isPaused = false;
 
     float m_timeToNextKeyLeftRight;
     [Range(0.02f,1f)]
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     public float m_keyRepeatRateRotate = 0.25f;
 
     public GameObject m_gameOverPanel;
+    public GameObject m_pausePanel;
 
     // Start is called before the first frame update
     void Start()
@@ -99,6 +101,10 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        else if(Input.GetButtonDown("Pause"))
+        {
+            Pause();
+        }
     }
 
     void GameOver()
@@ -112,15 +118,15 @@ public class GameManager : MonoBehaviour
 
     private void LandShape()
     {
+        m_currentShape.MoveUp();
+        m_board.StoreShapeInGrid(m_currentShape);
+        m_currentShape = m_spawner.SpawnShape();
+        
         PlaySound(m_soundManager.m_dropSound);
 
         m_timeToNextKeyLeftRight = Time.time;
         m_timeToNextKeyDown = Time.time;
         m_timeToNextKeyRotate = Time.time;
-
-        m_currentShape.MoveUp();
-        m_board.StoreShapeInGrid(m_currentShape);
-        m_currentShape = m_spawner.SpawnShape();
 
         m_board.ClearAllRows();
 
@@ -147,6 +153,18 @@ public class GameManager : MonoBehaviour
 
     public void Restart()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(0);
+    }
+
+    public void Pause()
+    {
+        if(m_gameOver) {return;}
+
+        m_isPaused = !m_isPaused;
+        
+        m_pausePanel.SetActive(m_isPaused);
+
+        Time.timeScale = (m_isPaused) ? 0 : 1;
     }
 }
