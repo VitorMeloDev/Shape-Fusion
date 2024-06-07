@@ -6,10 +6,18 @@ using UnityEngine;
 public class TouchManager : MonoBehaviour
 {
     public delegate void TouchEventHandler(Vector2 swipe);
+    public static event TouchEventHandler DragEvent;
     public static event TouchEventHandler SwipeEvent;
-    public static event TouchEventHandler SwipeEndEvent;
+    public static event TouchEventHandler TapEvent;
     Vector2 m_touchMovement;
-    int m_minSwipeDistance = 20;
+
+    [Range(50,150)]
+    int m_minDragDistance = 100;
+    [Range(50,250)]
+    int m_minSwipeDistance = 200;
+
+    float m_tapTimeMax = 0;
+    public float m_tapTimeWindow = 0.1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +34,7 @@ public class TouchManager : MonoBehaviour
             if(touch.phase == TouchPhase.Began)
             {
                 m_touchMovement = Vector2.zero;
+                m_tapTimeMax = Time.time + m_tapTimeWindow;
             }
             else if(touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
             {
@@ -33,17 +42,32 @@ public class TouchManager : MonoBehaviour
 
                 if(m_touchMovement.magnitude > m_minSwipeDistance)
                 {
-                    OnSwipe();
+                    OnDrag();
                 }
             }
             else if(touch.phase == TouchPhase.Ended)
             {
-                OnSwipeEnd();
+                if(m_touchMovement.magnitude > m_minSwipeDistance)
+                {
+                    OnSwipeEnd();
+                }
+                else if (Time.time < m_tapTimeMax)
+                {
+                    OnTap();
+                }
             }
         }
     }
 
-    void OnSwipe()
+    void OnDrag()
+    {
+        if(DragEvent != null)
+        {
+            DragEvent(m_touchMovement);
+        }
+    }
+
+    void OnSwipeEnd()
     {
         if(SwipeEvent != null)
         {
@@ -51,11 +75,11 @@ public class TouchManager : MonoBehaviour
         }
     }
 
-    void OnSwipeEnd()
+    void OnTap()
     {
-        if(SwipeEndEvent != null)
+        if(TapEvent != null)
         {
-            SwipeEndEvent(m_touchMovement);
+            TapEvent(m_touchMovement);
         }
     }
 }

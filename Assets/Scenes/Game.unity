@@ -5355,11 +5355,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ghost: {fileID: 0}
   m_dropInterval: 0.9
-  m_keyRepeatRateLeftRight: 0.1
-  m_keyRepeatRateDown: 0.02
-  m_keyRepeatRateRotate: 0.2
+  m_keyRepeatRateLeftRight: 0.3
+  m_keyRepeatRateDown: 0.03
+  m_keyRepeatRateRotate: 0.3
   m_gameOverPanel: {fileID: 103715830}
   m_pausePanel: {fileID: 2084945048}
+  m_minTimeToDrag: 0.15
+  m_minTimeToSwipe: 0.3
 --- !u!4 &1193791534
 Transform:
   m_ObjectHideFlags: 0
