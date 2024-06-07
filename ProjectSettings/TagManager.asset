@@ -9,6 +9,7 @@ TagManager:
   - Board
   - SoundManager
   - ScoreManager
+  - Ghost
   layers:
   - Default
   - TransparentFX
