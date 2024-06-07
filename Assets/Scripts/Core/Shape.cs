@@ -18,6 +18,7 @@ public class Shape : MonoBehaviour
             m_glowFX = GameObject.FindGameObjectsWithTag(glowTag);
         }
     }
+    
     public void LandShapeFX()
     {
        int i = 0;
