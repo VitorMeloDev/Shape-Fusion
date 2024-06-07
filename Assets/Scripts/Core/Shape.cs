@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Shape : MonoBehaviour
@@ -7,16 +8,34 @@ public class Shape : MonoBehaviour
     public bool m_canRotate;
 	public Vector3 m_queueOffset;
 
-    // Start is called before the first frame update
-    void Start()
+    GameObject[] m_glowFX;
+    public string glowTag = "GlowFX";
+    
+    private void Start() 
     {
-        
+        if(glowTag != "")
+        {
+            m_glowFX = GameObject.FindGameObjectsWithTag(glowTag);
+        }
     }
-
-    // Update is called once per frame
-    void Update()
+    public void LandShapeFX()
     {
-        
+       int i = 0;
+
+       foreach(Transform child in gameObject.transform)
+       {
+            if(m_glowFX[i])
+            {
+                m_glowFX[i].transform.position = new Vector3(child.position.x, child.position.y, -8f);
+                ParticlePlayer particlePlayer = m_glowFX[i].GetComponent<ParticlePlayer>();
+
+                if(particlePlayer)
+                {
+                    particlePlayer.PlayParticles();
+                }
+            }
+            i++;
+        }
     }
 
     public void Move(Vector3 moveDirection)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TreeEditor;
@@ -15,6 +16,7 @@ public class Board : MonoBehaviour
 
     Transform[,] m_grid;
     public int m_completedRows = 0;
+    public ParticlePlayer[] m_rowGlowFX = new ParticlePlayer[4];
 
     void Awake() 
     {
@@ -142,18 +144,38 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void ClearAllRows()
+    public IEnumerator ClearAllRows()
     {
         m_completedRows = 0;
+
         for(int y = 0; y < m_heigth; y++)
         {
             if(IsComplete(y))
             {
+                ClearRowFX(m_completedRows, y);
                 m_completedRows++;
+            }
+        }
+
+        yield return new WaitForSeconds(.5f);
+        for(int y = 0; y < m_heigth; y++)
+        {
+            if(IsComplete(y))
+            {
                 ClearRow(y);
                 ShiftRowsDown(y+1);
+                yield return new WaitForSeconds(.2f);
                 y--;
             }
+        }
+    }
+
+    void ClearRowFX(int id, int y)
+    {
+        if(m_rowGlowFX[id])
+        {
+            m_rowGlowFX[id].transform.position = new Vector3(5, y, -8);
+            m_rowGlowFX[id].PlayParticles();
         }
     }
 

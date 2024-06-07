@@ -10,6 +10,7 @@ TagManager:
   - SoundManager
   - ScoreManager
   - Ghost
+  - GlowFX
   layers:
   - Default
   - TransparentFX

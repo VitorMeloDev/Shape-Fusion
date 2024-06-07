@@ -137,44 +137,49 @@ public class GameManager : MonoBehaviour
 
     private void LandShape()
     {
-        m_currentShape.MoveUp();
-        m_board.StoreShapeInGrid(m_currentShape);
-        m_currentShape = m_spawner.SpawnShape();
-
-        m_timeToNextKeyLeftRight = Time.time;
-        m_timeToNextKeyDown = Time.time;
-        m_timeToNextKeyRotate = Time.time;
-
-        m_board.ClearAllRows();
-        PlaySound(m_soundManager.m_dropSound);
-        
-        if(m_ghost)
+        if(m_currentShape)
         {
-            m_ghost.Reset();
+            m_currentShape.MoveUp();
+            m_currentShape.LandShapeFX();
+            m_board.StoreShapeInGrid(m_currentShape);
+            m_currentShape = m_spawner.SpawnShape();
+
+            m_timeToNextKeyLeftRight = Time.time;
+            m_timeToNextKeyDown = Time.time;
+            m_timeToNextKeyRotate = Time.time;
+
+            m_board.StartCoroutine("ClearAllRows");
+            PlaySound(m_soundManager.m_dropSound);
+            
+            if(m_ghost)
+            {
+                m_ghost.Reset();
+            }
+
+            if (m_board.m_completedRows > 0)
+            {
+                m_scoreManager.ScoreLines(m_board.m_completedRows);
+
+                if (m_scoreManager.didLevelUp)
+                {
+                    m_dropIntervalModded = Mathf.Clamp(m_dropInterval - ((float)m_scoreManager.m_level * 0.05f), 0.05f, 1f);
+                    PlaySound(m_soundManager.m_levelUpVocalClip);
+                }
+                else
+                {
+                    if (m_board.m_completedRows > 1)
+                    {
+                        AudioClip randomVocal = m_soundManager.GetRandomAudioClip(m_soundManager.m_vocalClips);
+                        PlaySound(randomVocal);
+                    }
+                }
+
+                PlaySound (m_soundManager.m_clearRowSound);
+            }
+
+            PlaySound (m_soundManager.m_clearRowSound);
         }
-
-		if (m_board.m_completedRows > 0)
-		{
-			m_scoreManager.ScoreLines(m_board.m_completedRows);
-
-			if (m_scoreManager.didLevelUp)
-			{
-				m_dropIntervalModded = Mathf.Clamp(m_dropInterval - ((float)m_scoreManager.m_level * 0.05f), 0.05f, 1f);
-				PlaySound(m_soundManager.m_levelUpVocalClip);
-			}
-			else
-			{
-				if (m_board.m_completedRows > 1)
-				{
-					AudioClip randomVocal = m_soundManager.GetRandomAudioClip(m_soundManager.m_vocalClips);
-					PlaySound(randomVocal);
-				}
-			}
-
-			PlaySound (m_soundManager.m_clearRowSound);
-		}
-
-		PlaySound (m_soundManager.m_clearRowSound);
+       
     }
 
     void PlaySound(AudioClip clip)
