@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     Shape m_currentShape;
     SoundManager m_soundManager;
     ScoreManager m_scoreManager;
+    public Ghost m_ghost;
     bool m_gameOver;
 
 	public float m_dropInterval = 0.1f;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
         m_spawner = GameObject.FindWithTag("Spawner").GetComponent<Spawner>();
         m_soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
         m_scoreManager = GameObject.FindWithTag("ScoreManager").GetComponent<ScoreManager>();
+        m_ghost = GameObject.FindWithTag("Ghost").GetComponent<Ghost>();
         m_gameOverPanel.SetActive(false);
 
         m_timeToNextKeyLeftRight = Time.time + m_keyRepeatRateLeftRight;
@@ -68,6 +70,15 @@ public class GameManager : MonoBehaviour
         }
 
         PlayerInput();
+    }
+
+    void LateUpdate() 
+    {
+        if(m_ghost)
+        {
+            m_ghost.DrawGhost(m_currentShape, m_board);
+            Debug.Log("sasdas");
+        }    
     }
 
     void PlayerInput()
@@ -129,15 +140,18 @@ public class GameManager : MonoBehaviour
         m_currentShape.MoveUp();
         m_board.StoreShapeInGrid(m_currentShape);
         m_currentShape = m_spawner.SpawnShape();
-        
-        PlaySound(m_soundManager.m_dropSound);
 
         m_timeToNextKeyLeftRight = Time.time;
         m_timeToNextKeyDown = Time.time;
         m_timeToNextKeyRotate = Time.time;
 
         m_board.ClearAllRows();
-
+        PlaySound(m_soundManager.m_dropSound);
+        
+        if(m_ghost)
+        {
+            m_ghost.Reset();
+        }
 
 		if (m_board.m_completedRows > 0)
 		{
