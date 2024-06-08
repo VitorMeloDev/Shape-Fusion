@@ -939,6 +939,7 @@ Transform:
   - {fileID: 566229448}
   - {fileID: 1761386841}
   - {fileID: 310028666}
+  - {fileID: 1240045123}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &253521218 stripped
@@ -3085,7 +3086,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.20652941}
   m_AnchorMax: {x: 1, y: 0.44252944}
-  m_AnchoredPosition: {x: 0.0018310547, y: 1.4750366}
+  m_AnchoredPosition: {x: 0.0018310547, y: 1.4750977}
   m_SizeDelta: {x: 1.4400024, y: -5.1860046}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &775517758
@@ -5537,13 +5538,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ghost: {fileID: 0}
   m_dropInterval: 0.9
-  m_keyRepeatRateLeftRight: 0.3
+  m_keyRepeatRateLeftRight: 0.25
   m_keyRepeatRateDown: 0.03
-  m_keyRepeatRateRotate: 0.3
+  m_keyRepeatRateRotate: 0.2
   m_gameOverPanel: {fileID: 103715830}
   m_pausePanel: {fileID: 2084945048}
-  m_minTimeToDrag: 0.15
-  m_minTimeToSwipe: 0.3
+  m_minTimeToDrag: 0.085
+  m_minTimeToSwipe: 0.25
 --- !u!4 &1193791534
 Transform:
   m_ObjectHideFlags: 0
@@ -5559,6 +5560,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 220447228}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1240045122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1240045123}
+  - component: {fileID: 1240045124}
+  m_Layer: 0
+  m_Name: TouchManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1240045123
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240045122}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 220447228}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1240045124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240045122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d3a06680614e8245a6b9cae011c0237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_minDragDistance: 100
+  m_minSwipeDistance: 150
+  m_tapTimeWindow: 0.1
 --- !u!1001 &1240325366
 PrefabInstance:
   m_ObjectHideFlags: 0

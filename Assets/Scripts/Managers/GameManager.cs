@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
             m_timeToNextSwipe = Time.time + m_minTimeToSwipe;
             m_didTap = false;
         }
-        else if((m_swipeDirection == Direction.down && Time.time > m_timeToNextDrag))
+        else if((m_dragDirection == Direction.down && Time.time > m_timeToNextDrag))
         {
             MoveDown();
         }

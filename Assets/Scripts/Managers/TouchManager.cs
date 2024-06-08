@@ -12,9 +12,9 @@ public class TouchManager : MonoBehaviour
     Vector2 m_touchMovement;
 
     [Range(50,150)]
-    int m_minDragDistance = 100;
+    public int m_minDragDistance = 100;
     [Range(50,250)]
-    int m_minSwipeDistance = 200;
+    public int m_minSwipeDistance = 200;
 
     float m_tapTimeMax = 0;
     public float m_tapTimeWindow = 0.1f;
