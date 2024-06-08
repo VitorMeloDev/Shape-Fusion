@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
         if(m_ghost)
         {
             m_ghost.DrawGhost(m_currentShape, m_board);
-            Debug.Log("sasdas");
         }    
     }
 
